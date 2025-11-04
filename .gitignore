@@ -1,0 +1,37 @@
+# ---------------------------------
+# Eclipse & Spring Boot (in /back-end/)
+# ---------------------------------
+/back-end/.metadata/
+/back-end/.classpath
+/back-end/.project
+/back-end/.settings/
+/back-end/.springBeans
+/back-end/target/
+
+# Compiled Java
+*.class
+
+# Logs
+*.log
+
+# ---------------------------------
+# React & Node.js (in /front-end/)
+# ---------------------------------
+# Dependency directories
+/front-end/node_modules/
+
+# Build output
+/front-end/build/
+/front-end/dist/
+
+# Local environment files
+/front-end/.env.local
+/front-end/.env.development.local
+/front-end/.env.test.local
+/front-end/.env.production.local
+
+# ---------------------------------
+# VS Code (at root)
+# ---------------------------------
+# User-specific workspace settings
+.vscode/
