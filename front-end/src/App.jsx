@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import CustomerRouters from "./routers/CustomerRouters";
+import AdminRouters from "./routers/AdminRouters";
 
 function App() {
   return (
@@ -7,6 +8,7 @@ function App() {
       <div className="">
         <Routes>
           <Route path="*" element={<CustomerRouters />} />
+          <Route path="admin/*" element={<AdminRouters />} />
         </Routes>
         <div></div>
       </div>

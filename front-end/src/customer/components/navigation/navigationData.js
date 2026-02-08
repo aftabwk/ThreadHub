@@ -5,16 +5,18 @@ export const navigation = {
       name: "Women",
       featured: [
         {
+          id: "women_new_arrivals",
           name: "New Arrivals",
-          href: "/",
+          href: "/women/new-arrivals",
           imageSrc:
             "https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg",
           imageAlt:
             "Models sitting back to back, wearing Basic Tee in black and bone.",
         },
         {
+          id: "women_basic_tees",
           name: "Basic Tees",
-          href: "/",
+          href: "/women/basic-tees",
           imageSrc:
             "https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg",
           imageAlt:
@@ -23,108 +25,224 @@ export const navigation = {
       ],
       sections: [
         {
-          id: "clothing",
+          id: "women_clothing",
           name: "Clothing",
           items: [
-            { name: "Tops", id: "top", href: `{women/clothing/tops}` },
-            { name: "Dresses", id: "women_dress", href: "#" },
-            { name: "Women Jeans", id: "women_jeans" },
-            { name: "Lengha Choli", id: "lengha_choli" },
-            { name: "Sweaters", id: "sweater" },
-            { name: "T-Shirts", id: "t-shirt" },
-            { name: "Jackets", id: "jacket" },
-            { name: "Gouns", id: "gouns" },
-            { name: "Sarees", id: "saree" },
-            { name: "Kurtas", id: "kurtas" },
+            { name: "Tops", id: "women_tops", href: "/women/clothing/tops" },
+            {
+              name: "Dresses",
+              id: "women_dresses",
+              href: "/women/clothing/dresses",
+            },
+            { name: "Jeans", id: "women_jeans", href: "/women/clothing/jeans" },
+            {
+              name: "Lengha Choli",
+              id: "women_lengha_choli",
+              href: "/women/clothing/lengha-choli",
+            },
+            {
+              name: "Sweaters",
+              id: "women_sweaters",
+              href: "/women/clothing/sweaters",
+            },
+            {
+              name: "T-Shirts",
+              id: "women_tshirts",
+              href: "/women/clothing/tshirts",
+            },
+            {
+              name: "Jackets",
+              id: "women_jackets",
+              href: "/women/clothing/jackets",
+            },
+            { name: "Gowns", id: "women_gowns", href: "/women/clothing/gowns" },
+            {
+              name: "Sarees",
+              id: "women_sarees",
+              href: "/women/clothing/sarees",
+            },
+            {
+              name: "Kurtas",
+              id: "women_kurtas",
+              href: "/women/clothing/kurtas",
+            },
           ],
         },
         {
-          id: "accessories",
+          id: "women_accessories",
           name: "Accessories",
           items: [
-            { name: "Watches", id: "watch" },
-            { name: "Wallets", id: "wallet" },
-            { name: "Bags", id: "bag" },
-            { name: "Sunglasses", id: "sunglasse" },
-            { name: "Hats", id: "hat" },
-            { name: "Belts", id: "belt" },
+            {
+              name: "Watches",
+              id: "women_watch",
+              href: "/women/accessories/watches",
+            },
+            {
+              name: "Wallets",
+              id: "women_wallet",
+              href: "/women/accessories/wallets",
+            },
+            { name: "Bags", id: "women_bag", href: "/women/accessories/bags" },
+            {
+              name: "Sunglasses",
+              id: "women_sunglasses",
+              href: "/women/accessories/sunglasses",
+            },
+            { name: "Hats", id: "women_hats", href: "/women/accessories/hats" },
+            {
+              name: "Belts",
+              id: "women_belts",
+              href: "/women/accessories/belts",
+            },
           ],
         },
         {
-          id: "brands",
+          id: "women_brands",
           name: "Brands",
           items: [
-            { name: "Full Nelson", id: "#" },
-            { name: "My Way", id: "#" },
-            { name: "Re-Arranged", id: "#" },
-            { name: "Counterfeit", id: "#" },
-            { name: "Significant Other", id: "#" },
+            {
+              name: "Full Nelson",
+              id: "brand_full_nelson",
+              href: "/women/brands/full-nelson",
+            },
+            {
+              name: "My Way",
+              id: "brand_my_way",
+              href: "/women/brands/my-way",
+            },
+            {
+              name: "Re-Arranged",
+              id: "brand_re_arranged",
+              href: "/women/brands/re-arranged",
+            },
+            {
+              name: "Counterfeit",
+              id: "brand_counterfeit",
+              href: "/women/brands/counterfeit",
+            },
+            {
+              name: "Significant Other",
+              id: "brand_significant_other",
+              href: "/women/brands/significant-other",
+            },
           ],
         },
       ],
     },
+
     {
       id: "men",
       name: "Men",
       featured: [
         {
+          id: "men_new_arrivals",
           name: "New Arrivals",
-          id: "#",
+          href: "/men/new-arrivals",
           imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
+            "https://campussutra.com/cdn/shop/files/CSMSSRT6078_1_ad9219ef-869d-44b2-9dd2-5876b06cc708.webp?v=1713879728&width=2000",
           imageAlt:
             "Drawstring top with elastic loop closure and textured interior padding.",
         },
         {
+          id: "men_artwork_tees",
           name: "Artwork Tees",
-          id: "#",
+          href: "/men/artwork-tees",
           imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
+            "https://m.media-amazon.com/images/I/51wZ+1NMHXL._AC_UY1100_.jpg",
           imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
+            "Three shirts in gray, white, and blue arranged on a table with line drawings on the front.",
         },
       ],
       sections: [
         {
-          id: "clothing",
+          id: "men_clothing",
           name: "Clothing",
           items: [
-            { name: "Mens Kurtas", id: "mens_kurta" },
-            { name: "Shirt", id: "shirt" },
-            { name: "Men Jeans", id: "men_jeans" },
-            { name: "Sweaters", id: "#" },
-            { name: "T-Shirts", id: "t-shirt" },
-            { name: "Jackets", id: "#" },
-            { name: "Activewear", id: "#" },
+            {
+              name: "Mens Kurtas",
+              id: "men_kurtas",
+              href: "/men/clothing/kurtas",
+            },
+            { name: "Shirts", id: "men_shirts", href: "/men/clothing/shirts" },
+            { name: "Jeans", id: "men_jeans", href: "/men/clothing/jeans" },
+            {
+              name: "Sweaters",
+              id: "men_sweaters",
+              href: "/men/clothing/sweaters",
+            },
+            {
+              name: "T-Shirts",
+              id: "men_tshirts",
+              href: "/men/clothing/tshirts",
+            },
+            {
+              name: "Jackets",
+              id: "men_jackets",
+              href: "/men/clothing/jackets",
+            },
+            {
+              name: "Activewear",
+              id: "men_activewear",
+              href: "/men/clothing/activewear",
+            },
           ],
         },
         {
-          id: "accessories",
+          id: "men_accessories",
           name: "Accessories",
           items: [
-            { name: "Watches", id: "#" },
-            { name: "Wallets", id: "#" },
-            { name: "Bags", id: "#" },
-            { name: "Sunglasses", id: "#" },
-            { name: "Hats", id: "#" },
-            { name: "Belts", id: "#" },
+            {
+              name: "Watches",
+              id: "men_watch",
+              href: "/men/accessories/watches",
+            },
+            {
+              name: "Wallets",
+              id: "men_wallet",
+              href: "/men/accessories/wallets",
+            },
+            { name: "Bags", id: "men_bag", href: "/men/accessories/bags" },
+            {
+              name: "Sunglasses",
+              id: "men_sunglasses",
+              href: "/men/accessories/sunglasses",
+            },
+            { name: "Hats", id: "men_hats", href: "/men/accessories/hats" },
+            { name: "Belts", id: "men_belts", href: "/men/accessories/belts" },
           ],
         },
         {
-          id: "brands",
+          id: "men_brands",
           name: "Brands",
           items: [
-            { name: "Re-Arranged", id: "#" },
-            { name: "Counterfeit", id: "#" },
-            { name: "Full Nelson", id: "#" },
-            { name: "My Way", id: "#" },
+            {
+              name: "Re-Arranged",
+              id: "men_brand_re_arranged",
+              href: "/men/brands/re-arranged",
+            },
+            {
+              name: "Counterfeit",
+              id: "men_brand_counterfeit",
+              href: "/men/brands/counterfeit",
+            },
+            {
+              name: "Full Nelson",
+              id: "men_brand_full_nelson",
+              href: "/men/brands/full-nelson",
+            },
+            {
+              name: "My Way",
+              id: "men_brand_my_way",
+              href: "/men/brands/my-way",
+            },
           ],
         },
       ],
     },
   ],
+
   pages: [
-    { name: "Company", id: "/" },
-    { name: "Stores", id: "/" },
+    { name: "Company", id: "page_company", href: "/company" },
+    { name: "Stores", id: "page_stores", href: "/stores" },
   ],
 };

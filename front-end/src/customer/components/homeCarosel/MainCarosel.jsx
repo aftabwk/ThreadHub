@@ -7,7 +7,7 @@ const MainCarosel = () => {
   const items = MainCaroselData.map((item) => (
     <img
       src={item.image}
-      className="cursor-pointer w-screen h-screen"
+      className="cursor-pointer w-screen h-[75vh]"
       role="presentation"
       alt=""
     />
@@ -16,6 +16,7 @@ const MainCarosel = () => {
     <AliceCarousel
       items={items}
       buttonsDisabled
+      dotsDisabled
       autoPlay
       autoPlayInterval={1000}
     />

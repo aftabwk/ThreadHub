@@ -3,9 +3,13 @@ import { Box, Button, Grid, LinearProgress, Rating } from "@mui/material";
 import ProductReviewCard from "./ProductReviewCard";
 import { mens_kurta } from "../../../data/mens_kurta";
 import HomeCard from "../homeCards/HomeCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { findProductsById } from "../../../state/product/Action";
+import { addItemToCart } from "../../../state/cart/Action";
 
-const product = {
+const products = {
   name: "Basic Tee 6-Pack",
   price: "$192",
   href: "#",
@@ -72,10 +76,20 @@ function classNames(...classes) {
 }
 
 export default function ProductDetails() {
+  const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useDispatch();
+  const { product } = useSelector((state) => state.product);
   const handleAddToCart = () => {
+    const data = { productId: params.productId, size: selectedSize };
+    dispatch(addItemToCart(data));
     navigate("/cart");
   };
+  useEffect(() => {
+    const data = { productId: params.productId };
+    dispatch(findProductsById(data));
+  }, [params.productId]);
   return (
     <div className="bg-white lg:px-10">
       <div className="pt-6">
@@ -84,7 +98,7 @@ export default function ProductDetails() {
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
           >
-            {product.breadcrumbs.map((breadcrumb) => (
+            {products.breadcrumbs.map((breadcrumb) => (
               <li key={breadcrumb.id}>
                 <div className="flex items-center">
                   <a
@@ -108,11 +122,11 @@ export default function ProductDetails() {
             ))}
             <li className="text-sm">
               <a
-                href={product.href}
+                href={products.href}
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {product.name}
+                {products.name}
               </a>
             </li>
           </ol>
@@ -122,13 +136,13 @@ export default function ProductDetails() {
           <div className="flex flex-col items-center">
             <div className="overflow-hidden rounded-lg max-w-[480px] max-h-[560px]">
               <img
-                alt={product.images[0].alt}
-                src={product.images[0].src}
+                alt={products.images[0].alt}
+                src={product?.imageUrl}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="flex flex-wrap space-x-5 justify-center">
-              {product.images.map((item) => (
+              {products.images.map((item) => (
                 <div
                   key={item.src}
                   className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg max-w-20 max-h-20 mt-4"
@@ -147,10 +161,10 @@ export default function ProductDetails() {
           <div className="lg:col-span-1 mx-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-24">
             <div className="lg:col-span-2 ">
               <h1 className="text-lg lg:text-xl font-semibold text-gray-900">
-                FUBAR
+                {product?.brand}
               </h1>
               <h1 className="text-lg lg:text-xl text-gray-900 opacity-60 pt-1">
-                Men Striped Cotton Blend Straight Kurta
+                {product?.title}
               </h1>
             </div>
 
@@ -158,9 +172,11 @@ export default function ProductDetails() {
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <h2 className="sr-only">Product information</h2>
               <div className="flex space-x-5 items-center text-lg lg:text-xl text-gray-900 mt-6">
-                <p className="font-semibold">230</p>
-                <p className="line-through opacity-50">469</p>
-                <p className="text-green-600 font-semibold">69% off</p>
+                <p className="font-semibold">₹{product?.discountedPrice}</p>
+                <p className="line-through opacity-50">₹{product?.price}</p>
+                <p className="text-green-600 font-semibold">
+                  {product?.discountPercent}% off
+                </p>
               </div>
 
               {/* Reviews */}
@@ -183,19 +199,20 @@ export default function ProductDetails() {
 
                   <fieldset aria-label="Choose a size" className="mt-4">
                     <div className="grid grid-cols-4 gap-3">
-                      {product.sizes.map((size) => (
+                      {products.sizes.map((size) => (
                         <label
-                          key={size.id}
+                          key={size.name}
                           aria-label={size.name}
                           className="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-checked:border-indigo-600 has-checked:bg-indigo-600 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-indigo-600 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25"
                         >
                           <input
-                            defaultValue={size.id}
-                            defaultChecked={size === product.sizes[1]}
-                            name="size"
                             type="radio"
+                            name="size"
+                            value={size.name}
+                            checked={selectedSize === size.name}
+                            onChange={() => setSelectedSize(size.name)}
                             disabled={!size.inStock}
-                            className="absolute inset-0 appearance-none focus:outline-none disabled:cursor-not-allowed"
+                            className="absolute inset-0 opacity-0 cursor-pointer"
                           />
                           <span className="text-sm font-medium text-gray-900 uppercase group-has-checked:text-white">
                             {size.name}
@@ -223,7 +240,7 @@ export default function ProductDetails() {
 
                 <div className="space-y-6">
                   <p className="text-base text-gray-900">
-                    {product.description}
+                    {products.description}
                   </p>
                 </div>
               </div>
@@ -235,7 +252,7 @@ export default function ProductDetails() {
 
                 <div className="mt-4">
                   <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                    {product.highlights.map((highlight) => (
+                    {products.highlights.map((highlight) => (
                       <li key={highlight} className="text-gray-400">
                         <span className="text-gray-600">{highlight}</span>
                       </li>
@@ -248,7 +265,7 @@ export default function ProductDetails() {
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
                 <div className="mt-4 space-y-6">
-                  <p className="text-sm text-gray-600">{product.details}</p>
+                  <p className="text-sm text-gray-600">{products.details}</p>
                 </div>
               </div>
             </div>
@@ -263,8 +280,8 @@ export default function ProductDetails() {
             <Grid container spacing={7}>
               <Grid size={{ xs: 7 }}>
                 <div className="space-y-5">
-                  {[1, 1, 1, 1].map((item) => (
-                    <ProductReviewCard />
+                  {[1, 2, 3, 4].map((item) => (
+                    <ProductReviewCard key={item} />
                   ))}
                 </div>
               </Grid>
@@ -355,7 +372,7 @@ export default function ProductDetails() {
           <h1 className="py-5 text-xl font-bold">Similar Products</h1>
           <div className="flex flex-wrap space-y-5 justify-center">
             {mens_kurta.map((item) => (
-              <HomeCard product={item} />
+              <HomeCard key={item.id} product={item.id} />
             ))}
           </div>
         </section>

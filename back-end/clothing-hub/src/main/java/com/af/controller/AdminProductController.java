@@ -28,8 +28,10 @@ public class AdminProductController {
 
 	@PostMapping("/")
 	public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest req) {
-
+		System.out.println("\n\n\nREQ RECEIVED: " + req.getTopLevelCategory());
 		Product product = productService.createProduct(req);
+		
+		System.out.println("Product RECEIVED: " + product);
 		return new ResponseEntity<Product>(product, HttpStatus.CREATED);
 	}
 

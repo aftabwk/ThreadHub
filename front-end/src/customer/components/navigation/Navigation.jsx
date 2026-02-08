@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -11,7 +11,11 @@ import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { navigation } from "./navigationData";
 import { Logo } from "../../../assets/assets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import AuthModal from "../../auth/AuthModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, logout } from "../../../state/auth/Action";
+import { getCart } from "../../../state/cart/Action";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,12 +24,26 @@ function classNames(...classes) {
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [cartLength, setCartLength] = useState(0);
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem("jwt");
-
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const { cart, cartItems, loading, error, deleteCartItem, updateCartItem } =
+    useSelector((state) => state.cart);
+  useEffect(() => {
+    dispatch(getCart());
+  }, [deleteCartItem, updateCartItem]);
+  const handleAddToCart = () => {
+    navigate("/cart");
+  };
+  const handleAdmin = () => {
+    navigate("/admin");
+  };
+  const location = useLocation();
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,6 +61,34 @@ export default function Navigation() {
   const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.id}`);
     close();
+  };
+
+  useEffect(() => {
+    if (jwt && cart && Array.isArray(cart.cartItems)) {
+      setCartLength(cart.cartItems.length);
+    } else {
+      setCartLength(0);
+    }
+  }, [jwt, cart?.cartItems]);
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt]);
+
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate("/");
+    }
+  }, [auth.user]);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUserMenu();
   };
 
   return (
@@ -96,7 +142,7 @@ export default function Navigation() {
                               selected
                                 ? "border-indigo-600 text-indigo-600"
                                 : "border-transparent text-gray-900",
-                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium border-none"
+                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium border-none",
                             )
                           }
                         >
@@ -129,8 +175,16 @@ export default function Navigation() {
                                 className="mt-6 block font-medium text-gray-900"
                               >
                                 <span
-                                  className="absolute inset-0 z-10"
+                                  className="absolute cursor-pointer inset-0 z-10"
                                   aria-hidden="true"
+                                  onClick={() =>
+                                    handleCategoryClick(
+                                      category,
+                                      section,
+                                      item,
+                                      () => setOpen(false),
+                                    )
+                                  }
                                 />
                                 {item.name}
                               </a>
@@ -156,8 +210,18 @@ export default function Navigation() {
                             >
                               {section.items.map((item) => (
                                 <li key={item.id} className="flow-root">
-                                  <p className="-m-2 block p-2 text-gray-500">
-                                    {"item.name"}
+                                  <p
+                                    className="-m-2 block p-2 cursor-pointer text-gray-500"
+                                    onClick={() =>
+                                      handleCategoryClick(
+                                        category,
+                                        section,
+                                        item,
+                                        () => setOpen(false),
+                                      )
+                                    }
+                                  >
+                                    {item.name}
                                   </p>
                                 </li>
                               ))}
@@ -253,7 +317,7 @@ export default function Navigation() {
                                 open
                                   ? "border-indigo-600 text-indigo-600"
                                   : "border-transparent text-gray-700 hover:text-gray-800",
-                                "relative z-10 -mb-px flex items-center cursor-pointer border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                                "relative z-10 -mb-px flex items-center cursor-pointer border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out",
                               )}
                             >
                               {category.name}
@@ -297,8 +361,16 @@ export default function Navigation() {
                                             className="mt-6 block font-medium text-gray-900"
                                           >
                                             <span
-                                              className="absolute inset-0 z-10"
+                                              className="absolute cursor-pointer inset-0 z-10"
                                               aria-hidden="true"
+                                              onClick={() =>
+                                                handleCategoryClick(
+                                                  category,
+                                                  section,
+                                                  item,
+                                                  () => setOpen(false),
+                                                )
+                                              }
                                             />
                                             {item.name}
                                           </a>
@@ -337,7 +409,7 @@ export default function Navigation() {
                                                       category,
                                                       section,
                                                       item,
-                                                      close
+                                                      close,
                                                     )
                                                   }
                                                   className="cursor-pointer hover:text-gray-800"
@@ -374,7 +446,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {true ? (
+                  {auth.user?.firstName ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -389,7 +461,7 @@ export default function Navigation() {
                           cursor: "pointer",
                         }}
                       >
-                        R
+                        {auth.user?.firstName[0].toUpperCase()}
                       </Avatar>
                       {/* <Button
                         id="basic-button"
@@ -409,7 +481,7 @@ export default function Navigation() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem>Profile</MenuItem>
+                        <MenuItem onClick={handleAdmin}>Admin</MenuItem>
                         <MenuItem
                           onClick={() => {
                             navigate("/account/order");
@@ -417,7 +489,7 @@ export default function Navigation() {
                         >
                           My Orders
                         </MenuItem>
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (
@@ -431,7 +503,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Search */}
-                <div className="flex items-center lg:ml-6">
+                {/* <div className="flex items-center lg:ml-6">
                   <p
                     onClick={() => navigate("/products/search")}
                     className="p-2 text-gray-400 hover:text-gray-500"
@@ -443,17 +515,20 @@ export default function Navigation() {
                       aria-hidden="true"
                     />
                   </p>
-                </div>
+                </div> */}
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <Button className="group -m-2 flex items-center p-2">
+                  <Button
+                    onClick={handleAddToCart}
+                    className="group -m-2 flex items-center p-2"
+                  >
                     <ShoppingBagIcon
                       className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      2
+                      {cartLength}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>
@@ -463,6 +538,8 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }
